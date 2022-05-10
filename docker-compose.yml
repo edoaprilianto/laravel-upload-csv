@@ -1,0 +1,10 @@
+version: "3.1"
+services:
+ redis:
+      image: redis:alpine
+      container_name: myapp-redis
+      command: redis-server --appendonly yes --requirepass "${REDIS_PASSWORD}"
+      volumes:
+      - ./data/redis:/data
+      ports:
+        - "8002:6379"
