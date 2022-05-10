@@ -31,7 +31,6 @@ class JobUpload implements ShouldQueue
     {
         $this->chunks = $chunks;
         $this->file_name = $file_name;
-        // CsvUpload::where('file_name',$this->file_name)->update(['status' => 'processing']);
 
     }
 
