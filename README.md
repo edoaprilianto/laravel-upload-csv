@@ -1,6 +1,8 @@
 ## Laravel Import CSV
 
-this application provide for the large amount file upload csv with laravel. handle real-time progress and chunks upload data to database & using redis queue for managing process
+this application provide for the large amount file upload csv with laravel. handle real-time progress and chunks upload data to database & using redis queue for managing process. 
+
+**Noted : After upload file in application , it will delay 30 second process**
 
 ## Features
 
