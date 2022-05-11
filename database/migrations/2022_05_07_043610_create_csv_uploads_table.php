@@ -17,8 +17,10 @@ class CreateCsvUploadsTable extends Migration
             $table->id();
             $table->string('file_name');
             $table->string('status');
-            // $table->dateTime('schedule_at');
             $table->timestamps();
+
+            $table->index(['file_name']);
+
         });
     }
 

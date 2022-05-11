@@ -25,6 +25,9 @@ class CreateProducts extends Migration
             $table->string('PIECE_PRICE');
             $table->string('FILE_NAME')->nullable();
             $table->timestamps();
+
+            $table->index(['UNIQUE_KEY']);
+
         });
     }
 

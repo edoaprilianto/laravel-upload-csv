@@ -37,14 +37,14 @@ class JobUpload implements ShouldQueue
 
     protected function start() {
 
-        CsvUpload::where('file_name',$this->file_name)->update(['status' => 'processing']);
+        CsvUpload::where('file_name',$this->file_name)->update(['status' => 'processing','updated_at' => now()->toDateTimeString()]);
         event(new ProgressEvent('processing',$this->file_name));
     }
 
 
      protected function stop() {
 
-        CsvUpload::where('file_name',$this->file_name)->update(['status' => 'completed']);
+        CsvUpload::where('file_name',$this->file_name)->update(['status' => 'completed','updated_at' => now()->toDateTimeString()]);
         event(new ProgressEvent('completed',$this->file_name));
     }
 
@@ -53,9 +53,9 @@ class JobUpload implements ShouldQueue
     protected function process() {
 
         $header = [];
-        CsvUpload::where('file_name',$this->file_name)->update(['status' => 'processing']);
+        CsvUpload::where('file_name',$this->file_name)->update(['status' => 'processing','updated_at' => now()->toDateTimeString()]);
         event(new ProgressEvent('processing',$this->file_name));
-        $chunks = array_chunk($this->chunks,4000);
+        $chunks = array_chunk($this->chunks,1000);
         foreach ($chunks as $key => $chunk) {
               $data = array_map('str_getcsv', $chunk );
               if($key == 0){
@@ -66,6 +66,7 @@ class JobUpload implements ShouldQueue
               foreach ($data as $row) {
                     $sellData = array_combine($header,$row);
                     $record = Product::where('UNIQUE_KEY',$sellData['UNIQUE_KEY'])->first();
+                    
                     if (is_null($record)){
                            Product::insert([
                                   'UNIQUE_KEY' => $sellData['UNIQUE_KEY'],
@@ -76,7 +77,9 @@ class JobUpload implements ShouldQueue
                                   'SIZE' => $sellData['SIZE'],
                                   'COLOR_NAME' => $sellData['COLOR_NAME'],
                                   'PIECE_PRICE' => $sellData['PIECE_PRICE'],
-                                  'FILE_NAME' => $this->file_name
+                                  'FILE_NAME' => $this->file_name,
+                                  'created_at' => now()->toDateTimeString(),
+     			                  'updated_at' => now()->toDateTimeString()
                               ]);
                        }
                        else {
@@ -88,7 +91,8 @@ class JobUpload implements ShouldQueue
                                   'SIZE' => $sellData['SIZE'],
                                   'COLOR_NAME' => $sellData['COLOR_NAME'],
                                   'PIECE_PRICE' => $sellData['PIECE_PRICE'],
-                                  'FILE_NAME' => $this->file_name
+                                  'FILE_NAME' => $this->file_name,
+                                  'updated_at' => now()->toDateTimeString()
                           ]);
                        }
                     }
@@ -102,6 +106,12 @@ class JobUpload implements ShouldQueue
         $this->start();
         $this->process();
         $this->stop();
+    }
+
+
+    public function failed(){
+        CsvUpload::where('file_name',$this->file_name)->update(['status' => 'failed','updated_at' => now()->toDateTimeString()]);
+        event(new ProgressEvent('failed',$this->file_name));
     }
 
     function remove_bs($Str) {

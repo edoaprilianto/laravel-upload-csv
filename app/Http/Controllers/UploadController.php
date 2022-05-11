@@ -62,7 +62,7 @@ class UploadController extends Controller
      		]);
 
      		 $job = new JobUpload($csv,$filename);
-    		 $job->delay($start->addSeconds(30));
+    		 $job->delay($start->addSeconds(10));
     		 dispatch($job);
         
      }
