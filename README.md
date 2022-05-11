@@ -1,6 +1,8 @@
 ## Laravel Import CSV
 
-this application provide for the large amount file upload csv with laravel. handle real-time progress and chunks upload data to database & using redis queue for managing process
+this application provide for the large amount file upload csv with laravel. handle real-time progress and chunks upload data to database & using redis queue for managing process. 
+
+**Noted : After upload file in application , it will delay 30 second process**
 
 ## Features
 
@@ -53,6 +55,11 @@ run a web socket
 ```bash
 php artisan websockets:serve
 ```
-after this command , you can access http://127.0.0.1:8000/laravel-websockets to check web socker running or no
+after this command , you can access http://127.0.0.1:8000/laravel-websockets to check web socker running or no.
+
+## Deployment
+
+![Blank diagram](https://user-images.githubusercontent.com/46880475/167731873-c5e6b205-370c-4288-afac-cbf0c79e5208.png)
+
 
 
